@@ -12,17 +12,12 @@ import {addLike, removeLike, savePost, unsavePost} from "../../actions/postActio
 class Post extends Component {
   constructor(props) {
     super(props);
-    this.goBack = this.goBack.bind(this);
-  
   }
 
   componentDidMount() {
     this.props.getPost(this.props.match.params.id, this.props.history);
   }
-
-  goBack() {
-    this.props.history.goBack();
-  }
+  
   onDeletePost(postId, history) {
     this.props.deletePost(postId, history);
   }
@@ -102,21 +97,7 @@ class Post extends Component {
             ></i>
           </div>
         )}
-        {/* <div type='button' className='icons-post'>
-          <i
-            style={{ fontSize: "1.5em" }}
-            className='fa fa-comment-o'
-            aria-hidden='true'
-          ></i>
-        </div>
-
-        <div type='button' className='icons-post'>
-          <i
-            style={{ fontSize: "1.5em" }}
-            className='far fa-user-circle'
-            aria-hidden='true'
-          ></i>
-        </div> */}
+        
         {alreadySaved === true ? (
           <div type='button' className='icons-post'>
             <i
@@ -147,12 +128,6 @@ class Post extends Component {
     );
       content = (
         <div className='child'>
-          <span className='close'>
-            <button onClick={this.goBack}>
-              <i className='fa fa-times' aria-hidden='true'></i>
-            </button>
-          </span>
-
           <div className='container-post'>
             <img
               className='size-of-image'
@@ -249,7 +224,7 @@ class Post extends Component {
     }
   
     return (
-      <div className='parent'>
+      <div className='parent' style={{minHeight: "90vh"}}>
         {content}
       </div>
     );

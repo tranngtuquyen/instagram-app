@@ -25,7 +25,7 @@ class CreatePost extends Component {
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
-    data.append("upload_preset", "instagram");
+    data.append("upload_preset", "circle");
     this.setState({
       fileData: data,
       showDefault: false,
@@ -42,7 +42,7 @@ class CreatePost extends Component {
 
     // POST image to cloudinary through the cloudinary API and append image
     fetch(
-      "https://api.cloudinary.com/v1_1/instagramteam/image/upload",
+      "https://api.cloudinary.com/v1_1/dk8wp0lsh/image/upload",
       {
         method: "POST",
         body: this.state.fileData,
@@ -50,6 +50,7 @@ class CreatePost extends Component {
     )
     .then(res => res.json())
     .then(result => {
+      console.log(result.secure_url);
       const newPost = {
         text: this.state.text,
         image: result.secure_url

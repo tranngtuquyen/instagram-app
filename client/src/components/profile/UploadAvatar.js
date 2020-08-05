@@ -97,7 +97,7 @@ class UploadAvatar extends Component {
   uploadImage = (croppedImageUrl) => {
     const data = new FormData();
     data.append("file", croppedImageUrl);
-    data.append("upload_preset", "instagram");
+    data.append("upload_preset", "circle");
     this.setState({
       fileData: data,
       showDefault: false,
@@ -111,7 +111,7 @@ class UploadAvatar extends Component {
 
   onSubmit = () => {
     // e.preventDefault();
-    fetch("https://api.cloudinary.com/v1_1/instagramteam/image/upload", {
+    fetch("https://api.cloudinary.com/v1_1/dk8wp0lsh/image/upload", {
       method: "POST",
       body: this.state.fileData,
     })

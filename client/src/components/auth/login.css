@@ -2,6 +2,7 @@
   margin-top: 50px; 
   justify-content:center;
   display: flex;
+  min-height: 90vh;
   }
 .mobile{
   height: 500px;

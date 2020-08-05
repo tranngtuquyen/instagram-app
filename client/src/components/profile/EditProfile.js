@@ -331,7 +331,7 @@ class CreateProfile extends Component {
   content = <Spinner />
 }
     return (
-      <div className='profile-form-container'>
+      <div className='profile-form-container' style={{minHeight: "90vh"}}>
         <div className='card profile-form-card'>
          {content}
         </div>

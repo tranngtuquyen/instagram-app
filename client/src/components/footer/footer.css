@@ -1,5 +1,5 @@
 footer{
- margin-top: 200px; 
+ /* margin-top: 200px;  */
  color:grey;
  font-size: 10px;
  font-weight: bold;
@@ -19,9 +19,10 @@ footer{
   
 }
 .stickyfooter {
- min-height: 90vh; /* will cover the 100% of viewport */
+ /* min-height: 60vh; */
  position: relative;
- padding-bottom: 100px; 
+ /* padding-bottom: 100px;  */
+ margin-top: 90px;
 }
 @media (max-width: 1200) {
 .f {

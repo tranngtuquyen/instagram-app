@@ -32,7 +32,7 @@ class Posts extends Component {
     }
 
     return (
-      <div className="feed">
+      <div className="feed" style={{minHeight: "90vh"}}>
         <div className="container">
           <div className="row">
             <div className="col-md-8">

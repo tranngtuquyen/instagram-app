@@ -54,7 +54,7 @@ class HandleProfile extends Component {
         </div>
       );
     }
-    return <div> {content}</div>;
+    return <div style={{minHeight: "90vh"}}> {content}</div>;
   }
 }
 

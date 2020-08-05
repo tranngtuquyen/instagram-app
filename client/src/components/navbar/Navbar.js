@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./navbar.css";
-import logo from "../../img/logo.png";
+import logo from "../../img/circle.png";
 import { Link, withRouter} from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
@@ -89,7 +89,7 @@ export class Navbar extends Component {
       >
         <div className='container'>
           <Link className='navbar-brand' to=''>
-            <img className='logo-navbar' alt='Instagram' src={logo} />
+            <img className='logo-navbar' alt='Circle' src={logo} />
           </Link>
 
           {/* <div className='search d-none d-xl-block'>

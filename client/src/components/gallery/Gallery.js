@@ -21,7 +21,7 @@ class Gallery extends Component {
     }
  
     return (
-      <div className='container masonry'>
+      <div className='container masonry' style={{minHeight: "90vh"}}>
         {!loadingPost ? (
           <Fragment>
             {posts.map((post) => (

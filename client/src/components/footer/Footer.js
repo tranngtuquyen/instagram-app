@@ -9,7 +9,7 @@ function Footer() {
           ABOUT HELP PRESS API JOBS PRIVACY TERMS LOCATIONS TOP ACCOUNTS
           HASHTAGS LANGUAGE
         </div>
-        &copy; {new Date().getFullYear()} INSTAGRAM FROM FACEBOOK
+        &copy; {new Date().getFullYear()} CIRCLE FROM ALSQ
       </footer>
     </div>
   );

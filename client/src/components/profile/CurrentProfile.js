@@ -36,7 +36,7 @@ class CurrentProfile extends Component {
             );
           }
           
-    return <div> {content}</div>;
+    return <div style={{minHeight: "90vh"}}> {content}</div>;
   }
 }
 

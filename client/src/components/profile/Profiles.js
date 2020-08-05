@@ -24,7 +24,7 @@ class Profiles extends Component {
       content = <div style={{textAlign: "center", fontSize: "22px"}}>No suggestions. You already follow all users.</div>
     }
     return (
-      <div className='container d-flex flex-wrap' style={{ marginTop: "30px" }}>
+      <div className='container d-flex flex-wrap' style={{ marginTop: "30px", minHeight: "90vh" }}>
         {content}
       </div>
     )

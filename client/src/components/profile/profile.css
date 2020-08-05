@@ -259,7 +259,7 @@
   margin-bottom: 30px; 
 }
 .hover-effect a:hover img {
-    transform: scale(1.1);
+  opacity: 0.5;
 }
 
  @media (max-width: 780px) {

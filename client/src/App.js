@@ -3,16 +3,13 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
-import Profile from "./components/profile/Profile";
 import EditProfile from "./components/profile/EditProfile";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/Navbar";
 import Post from "./components/displayPost/Post";
-import CreateProfile from "./components/profile/CreateProfile";
 import CreatePost from "./components/displayPost/CreatePost";
 import Profiles from "./components/profile/Profiles";
 import Posts from "./components/home/Posts";
-import CurrentProfile from "./components/profile/CurrentProfile";
 import HandleProfile from "./components/profile/HandleProfile";
 import PrivateRoute from "./components/common/PrivateRoute";
 //redux
@@ -59,15 +56,8 @@ class App extends Component {
             <Navbar />
             <Route exact path='/signup' component={Signup} />
             <Route exact path='/' component={Login} />
+            
             <Switch>
-              <PrivateRoute
-                exact
-                path='/current-profile'
-                component={CurrentProfile}
-              />{" "}
-            </Switch>
-            <Switch>
-              <PrivateRoute exact path='/profile' component={CurrentProfile} />
               <PrivateRoute
                 exact
                 path='/edit-profile'
@@ -87,14 +77,6 @@ class App extends Component {
               {" "}
               <PrivateRoute
                 exact
-                path='/create-profile'
-                component={CreateProfile}
-              />{" "}
-            </Switch>
-            <Switch>
-              {" "}
-              <PrivateRoute
-                exact
                 path='/create-post'
                 component={CreatePost}
               />{" "}
@@ -106,11 +88,6 @@ class App extends Component {
             <Switch>
               {" "}
               <PrivateRoute exact path='/home' component={Posts} />{" "}
-              {/* <PrivateRoute
-                exact
-                path='/home/:handle'
-                component={HandleProfile}
-              />{" "} */}
             </Switch>
             <Switch>
               {" "}

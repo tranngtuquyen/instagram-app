@@ -7,6 +7,7 @@ import {
   GET_ALL_PROFILES,
   GET_CURRENT_PROFILE,
   CLEAR_PROFILE,
+  PROFILES_LOADING,
 } from "../actions/types";
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
   followingList: null,
   search: null,
   currentProfile: null,
+  loadingProfiles: false,
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -23,6 +25,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
+      };
+    case PROFILES_LOADING:
+      return {
+        ...state,
+        loadingProfiles: true,
       };
     case GET_PROFILE:
       // console.log(action.payload);
@@ -48,7 +55,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         search: action.payload,
-        loading: false
+        loadingProfiles: false
       }
     case GET_FOLLOWING:
       return {

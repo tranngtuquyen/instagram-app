@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS, SET_CURRENT_USER, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_PROFILES, PROFILE_LOADING, GET_FOLLOWING, GET_ALL_PROFILES, GET_CURRENT_PROFILE, CLEAR_PROFILE } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_PROFILES, PROFILE_LOADING, GET_FOLLOWING, GET_ALL_PROFILES, GET_CURRENT_PROFILE, CLEAR_PROFILE, PROFILES_LOADING } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 import {logoutUser} from "./authActions";
 
@@ -86,7 +86,7 @@ dispatch(clearProfile());
 
 // Get all profiles
 export const getAllProfiles = () => (dispatch) => {
-  dispatch(setProfileLoading());
+  dispatch(setProfilesLoading());
   console.log("get all profiles");
   axios
     .get(`/api/profile/all`)
@@ -111,6 +111,12 @@ export const setProfileLoading = () => {
     type: PROFILE_LOADING
   };
 };
+//Profiles loading
+export const setProfilesLoading = () => {
+  return {
+    type: PROFILES_LOADING
+  }
+}
 
 // Clear current profile
 export const clearCurrentProfile = () => {

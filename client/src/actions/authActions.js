@@ -1,4 +1,4 @@
-import { SET_CURRENT_USER, GET_ERRORS, GET_PROFILE } from './types';
+import { SET_CURRENT_USER, GET_ERRORS, GET_PROFILE, CLEAR_ERRORS } from './types';
 import axios from 'axios';
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
@@ -7,6 +7,7 @@ import { clearCurrentProfile } from "./profileActions";
 
 //Register user
 export const signupUser = (userData, history) => dispatch => {
+  dispatch(clearErrors());
   axios
     .post('/api/users/signup', userData)
     .then(res => history.push('/'))
@@ -19,6 +20,7 @@ export const signupUser = (userData, history) => dispatch => {
 
 // Login user
 export const loginUser = (userData) => (dispatch) => {
+  dispatch(clearErrors());
   axios
     .post("/api/users/login", userData)
     .then((res) => {
@@ -89,4 +91,10 @@ export const deletePicture = (history) => dispatch => {
       payload: err.response.data
     })
   })
+}
+//Clear errors
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
+  }
 }

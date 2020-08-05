@@ -24,19 +24,14 @@ class Search extends Component {
     
     this.setState({ showMenu: true, searchInput: event.target.value }, () => {
       document.addEventListener('click', this.closeMenu);
+      this.props.getAllProfiles();
     });
-    this.props.getAllProfiles();
   }
   
   closeMenu(event) {
-    
-    if (!this.dropdownMenu.contains(event.target)) {
-      
-      this.setState({ showMenu: false, searchInput: "" }, () => {
-        document.removeEventListener('click', this.closeMenu);
-      });  
-      
-    }
+    this.setState({ showMenu: false, searchInput: "" }, () => {
+      document.removeEventListener('click', this.closeMenu);
+    });  
   }
 
   searchClick(event) {

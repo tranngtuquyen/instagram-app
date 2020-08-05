@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../img/logo.png";
+import logo from "../../img/circle.png";
 import mobile from "../../img/mobile.png";
 import axios from 'axios'
 import classnames from 'classnames';

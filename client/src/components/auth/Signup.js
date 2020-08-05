@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import logo from '../../img/logo.png';
+import logo from '../../img/circle.png';
 import { connect } from 'react-redux';
 import { signupUser } from '../../actions/authActions';
 import { withRouter } from 'react-router-dom';

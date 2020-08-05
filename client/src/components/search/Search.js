@@ -5,56 +5,42 @@ import { getAllProfiles } from "../../actions/profileActions";
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import Spinner from '../common/Spinner';
+import { useState } from 'react';
 
-class Search extends Component {
-  constructor(props) {
-    super(props);
+function Search (props) {
+  const [searchMenu, setSearchMenu] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
     
-    this.state = {
-      showMenu: false,
-      searchInput: ""
-    };
-    
-    this.showMenu = this.showMenu.bind(this);
-    this.closeMenu = this.closeMenu.bind(this);
-  }
-  
-  showMenu(event) {
+  const showMenu = (event) => {
     event.preventDefault();
-    
-    this.setState({ showMenu: true, searchInput: event.target.value }, () => {
-      document.addEventListener('click', this.closeMenu);
-      this.props.getAllProfiles();
-    });
+    setSearchMenu(true);
+    setSearchInput(event.target.value);
+    document.addEventListener('click', closeMenu);
+    props.getAllProfiles();
   }
   
-  closeMenu(event) {
-    this.setState({ showMenu: false, searchInput: "" }, () => {
-      document.removeEventListener('click', this.closeMenu);
-    });  
+  const closeMenu = (event) => {
+    setSearchMenu(false);
+    setSearchInput("");
+    document.removeEventListener('click', closeMenu); 
   }
-
-  searchClick(event) {
-    this.closeMenu(event);
-  }
-
-  render() {
-    const {search, loading} = this.props.profile;
-    const {auth} = this.props;
+  
+  const {search, loading} = props.profile;
+    const {auth} = props;
     let content;
     if(search === null || loading){
       content = <Spinner />;
     }
     if(search !== null && search.length > 0) {
       const searchProfiles = search.filter(profile => {
-        return profile.user.name.toLowerCase().includes(this.state.searchInput.toLowerCase()) && profile.user._id !== auth.user.id;
+        return profile.user.name.toLowerCase().includes(searchInput.toLowerCase()) && profile.user._id !== auth.user.id;
       });
       if (searchProfiles.length === 0) {
         content = <div style={{textAlign: "center", fontSize: "14px"}}>No search result</div>
       } else {
         content = searchProfiles.map(profile =>  {
           return (
-          <Link  to={`/profile/${profile.handle}`} className="searchOption" onClick={this.searchClick.bind(this)}>
+          <Link  to={`/profile/${profile.handle}`} className="searchOption">
             <div className="searchData">
               <div className="searchAvatarBox">
                 <img className="searchAvatar" src={profile.user.avatar}/>
@@ -67,36 +53,29 @@ class Search extends Component {
           </Link>
         )});
       }
-      // console.log(searchProfiles);
-      
-    } 
-        
-    return (
-      <div className='searchBox d-none d-xl-block'>
-        <span className='fa fa-search searchIcon'></span>
-        <input
-          className='searchInput'
-          type='search'
-          placeholder='Search..'
-          onChange={this.showMenu}
-          value={this.state.searchInput}
-        />
+    }
+  return (
+    <div className='searchBox d-none d-xl-block'>
+      <span className='fa fa-search searchIcon'></span>
+      <input
+        className='searchInput'
+        type='search'
+        placeholder='Search..'
+        onChange={showMenu}
+        value={searchInput}
+      />
 
-        {this.state.showMenu ? (
-          <div className='searchDropDown'>
-            <div
-              className='searchDropDownMenu'
-              ref={(element) => {
-                this.dropdownMenu = element;
-              }}
-            >
-              <div className='searchOptions'>{content}</div>
-            </div>
+      {searchMenu ? (
+        <div className='searchDropDown'>
+          <div
+            className='searchDropDownMenu'
+          >
+            <div className='searchOptions'>{content}</div>
           </div>
-        ) : null}
-      </div>
-    );
-  }
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => ({

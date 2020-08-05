@@ -48,7 +48,7 @@ class Signup extends Component {
     const {name} = this.state;
     const enabled = name.length > 0 ;
     return (
-      <div className='margin'>
+      <div className='margin' style={{marginHeight: "90vh"}}>
         <div className='d-flex flex-column'>
           <div className='card'>
             <div className='card-body'>

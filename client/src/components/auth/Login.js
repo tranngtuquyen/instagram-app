@@ -52,7 +52,7 @@ class Login extends Component {
     const { email, password } = this.state;
     const enabled = email.length > 0 && password.length > 0;
     return (
-      <div className='margin'>
+      <div className='margin' style={{marginHeight: "90vh"}}>
         <img className='mobile d-none d-xl-block d-md-block' src={mobile} />
         <div className='d-flex flex-column height'>
           <div className='card'>

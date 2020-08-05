@@ -1,9 +1,9 @@
 import axios from "axios";
 import { GET_ERRORS, GET_POSTS, GET_POST, POST_LOADING, CLEAR_ERRORS, GET_USER_POSTS, CLEAR_POST, CLEAR_POSTS } from "./types";
 
-
 //Add post
 export const addPost = (postData, history) => dispatch => {
+  dispatch(clearErrors());
   axios
     .post("/api/posts", postData)
     .then(res => {

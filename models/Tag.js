@@ -15,6 +15,12 @@ const TagSchema = new Schema({
   },
   handle: {
     type: String
+  },
+  leftX: {
+    type: String
+  },
+  topY: {
+    type: String
   }
 });
 module.exports = Tag = mongoose.model("tag", TagSchema);

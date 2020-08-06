@@ -17,7 +17,7 @@ class UploadAvatar extends Component {
       src: null,
       crop: {
         unit: "%",
-        width: 90,
+        width: "300",
         aspect: 1 / 1,
       },
     };
@@ -121,110 +121,103 @@ class UploadAvatar extends Component {
           avatar: result.secure_url,
         };
         this.props.addPicture(newPic, this.props.history);
-        console.log(newPic);
       });
   };
 
   render() {
     const { crop, src, croppedImageUrl } = this.state;
+    const {upload, closeUpload} = this.props;
     const enabled = !is_empty(this.state.src);
+    if (!upload) {
+      return null;
+    }
     return (
-      <div style={{width: "60%", justifyContent: "center", marginLeft: "auto", marginRight: "auto"}}>
-      <div
-        style={{ marginTop: "30px", position: "relative" }}
-      >
-        <div className='row'>
-          <div className='col-md-6 col-sm-12 d-flex flex-column'>
-            <input
-              type='file'
-              name='file'
-              // onClick={e => this.uploadImage}
-              style={{ marginBottom: "20px", marginTop: "10px" }}
-              accept='image/*'
-              onChange={this.onSelectFile}
-              required
-            />
-            {src && (
-              <ReactCrop
-                src={src}
-                crop={crop}
-                // ruleOfThirds
-                onImageLoaded={this.onImageLoaded}
-                onComplete={this.onCropComplete}
-                onChange={this.onCropChange}
-              />
-            )}
-            {/* {croppedImageUrl && (
-              <img
-                alt='Crop'
-                style={{
-                  // maxWidth: "100%",
-                  position: "absolute",
-                  top: "56px",
-                  left: "400px",
-                  width: "200px",
-                  borderRadius: "50%",
-                }}
-                src={croppedImageUrl}
-              />
-            )} */}
-            {this.state.showDefault && (
-              <img
-                src={defaultImage}
-                className='create-post-default-image-style'
-                alt='default image'
-                style={{marginTop: "0px"}}
-              />
-            )}
-          </div>{" "}
-          <div className="col-md-6 col-sm-12 d-flex flex-column">
-            <div style={{marginLeft: "20px"}}>
-              {/* Show cropped image */}
-              <div style={{marginTop: "2px"}}><span style={{fontSize: "1.75rem"}}>Update Avatar</span></div>
-              <div style={{height: "300px"}}>
-                {croppedImageUrl && (
-                  <img
-                    alt='Crop'
-                    style={{
-                      // maxWidth: "100%",
-                      // position: "absolute",
-                      top: "56px",
-                      // left: "400px",
-                      width: "200px",
-                      borderRadius: "50%",
-                      marginTop: "15px",
-                    }}
-                    src={croppedImageUrl}
+      <div className="firstsetupload">
+        <div className="thirdset">
+          <div className="containerset" style={{height: "500px", width: "600px"}}>
+          <div style={{justifyContent: "center", marginLeft: "auto", marginRight: "auto"}}>
+            <div className="container"
+              style={{ marginTop: "30px", position: "relative" }}
+            >
+              <div className='row'>
+                <div className='col-md-6 col-sm-12 d-flex flex-column'>
+                  <input
+                    type='file'
+                    name='file'
+                    // onClick={e => this.uploadImage}
+                    style={{ marginBottom: "20px", marginTop: "10px" }}
+                    accept='image/*'
+                    onChange={this.onSelectFile}
+                    required
                   />
-                )}
+                  {src && (
+                    <ReactCrop
+                      src={src}
+                      crop={crop}
+                      // ruleOfThirds
+                      onImageLoaded={this.onImageLoaded}
+                      onComplete={this.onCropComplete}
+                      onChange={this.onCropChange}
+                    />
+                  )}
+                  {this.state.showDefault && (
+                    <img
+                      src={defaultImage}
+                      className='create-post-default-image-style'
+                      alt='default image'
+                      style={{marginTop: "0px"}}
+                    />
+                  )}
+                </div>{" "}
+                <div className="col-md-6 col-sm-12 d-flex flex-column">
+                  <div style={{marginLeft: "20px"}}>
+                    {/* Show cropped image */}
+                    <div style={{marginTop: "2px"}}><span style={{fontSize: "1.75rem"}}>Update Avatar</span></div>
+                    <div style={{height: "300px"}}>
+                      {croppedImageUrl && (
+                        <img
+                          alt='Crop'
+                          style={{
+                            // maxWidth: "100%",
+                            // position: "absolute",
+                            top: "56px",
+                            // left: "400px",
+                            width: "200px",
+                            borderRadius: "50%",
+                            marginTop: "15px",
+                          }}
+                          src={croppedImageUrl}
+                        />
+                      )}
+                    </div>
+
+                    <div
+                      style={{
+                        marginTop: "30px",
+                      }}
+                    >
+                      <button
+                        onClick={this.onSubmit}
+                        type='submit'
+                        value='Upload'
+                        className='btn btn-primary'
+                        style={{ width: "70px", height: "35px", marginRight: "10px" }}
+                        disabled={!enabled}
+                      >
+                        Upload
+                      </button>     
+
+                      <div onClick={closeUpload} className='btn btn-secondary'>
+                        Cancel
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              <div
-                style={{
-                  marginTop: "30px",
-                }}
-              >
-                <button
-                  onClick={this.onSubmit}
-                  type='submit'
-                  value='Upload'
-                  className='btn btn-primary'
-                  style={{ width: "70px", height: "35px", marginRight: "10px" }}
-                  disabled='disabled'
-                  disabled={!enabled}
-                >
-                  Upload
-                </button>     
-
-                <Link to='/profile' className='btn btn-secondary'>
-                  Cancel
-                </Link>
               </div>
             </div>
-            
           </div>
         </div>
-      </div>
       </div>
     );
   }

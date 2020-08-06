@@ -13,6 +13,7 @@ import FollowList from "./FollowList";
 import Count from "./subComponents/Count";
 import ProfileButtons from "./ProfileButtons";
 import ProfilePosts from "./ProfilePosts";
+import UploadAvatar from "./UploadAvatar";
 
 function Profile(props) {
   const [show, setShow] = useState(false);
@@ -25,6 +26,7 @@ function Profile(props) {
   const [savedIcon, setSavedIcon] = useState(false);
   const [tagIcon, setTagIcon] = useState(false);
   const [tagged, setTagged] = useState(false);
+  const [upload, setUpload] = useState(false);
 
   useEffect(() => {
     setPosts(props.userPosts);
@@ -84,6 +86,15 @@ function Profile(props) {
     setSaved(false);
     setTagged(true);
   }
+
+  const showUpload = () => {
+    setUpload(true);
+    setChange(false);
+  }
+
+  const closeUpload = () => {
+    setUpload(false);
+  }
   
   let profileContent;
   let following = [];
@@ -111,7 +122,9 @@ function Profile(props) {
             change={change}
             close={changeProfilePicture}
             remove={onRemove}
+            showUpload={showUpload}
           />
+          <UploadAvatar upload={upload} closeUpload={closeUpload} croppedImageUrl={profile.user.avatar}/>
           <div className='d-flex flex-column space'>
             <h2 className='HandleName'>
               {profile.user.name}

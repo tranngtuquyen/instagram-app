@@ -186,8 +186,8 @@ export const getFollowingList = () => dispatch => {
 export const addPicture = (newPic, history) => dispatch => {
      console.log(newPic);
   axios.post('/api/users/editAvatar', newPic).then(res =>{
-  window.alert("Profile picture uploaded")
-  history.push("/profile")
+
+  window.location.reload(true)
   })
   .catch((err) => {
       // console.log(err)

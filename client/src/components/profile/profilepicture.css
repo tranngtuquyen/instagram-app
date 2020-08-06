@@ -21,3 +21,13 @@
   right: 0;
   z-index: 2
 }
+.firstsetupload {
+  height: 100%;
+  position: fixed;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2
+}

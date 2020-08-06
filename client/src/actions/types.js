@@ -17,6 +17,7 @@ export const GET_CURRENT_PROFILE = "GET_CURRENT_PROFILE";
 export const CLEAR_PROFILE = "CLEAR_PROFILE";
 export const CLEAR_POSTS = "CLEAR_POSTS";
 export const PROFILES_LOADING = "PROFILES_LOADING";
+export const GET_TAG_POSTS = "GET_TAG_POSTS";
 
 
 

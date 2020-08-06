@@ -1,10 +1,11 @@
-import { GET_POST, GET_POSTS, POST_LOADING, GET_USER_POSTS, CLEAR_POST, CLEAR_POSTS } from "../actions/types";
+import { GET_POST, GET_POSTS, POST_LOADING, GET_USER_POSTS, CLEAR_POST, CLEAR_POSTS, GET_TAG_POSTS } from "../actions/types";
 
 const initialState = {
   posts: [],
   post: {},
   userPosts: null,
-  loadingPost: false
+  loadingPost: false,
+  tagPosts: null,
 };
 
 export default function (state=initialState, action) {
@@ -14,6 +15,11 @@ export default function (state=initialState, action) {
         ...state,
         loadingPost: true,
       };
+    case GET_TAG_POSTS:
+      return {
+        ...state,
+        tagPosts: action.payload,
+      }
     case GET_POSTS:
       return {
         ...state,

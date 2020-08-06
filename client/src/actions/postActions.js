@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS, GET_POSTS, GET_POST, POST_LOADING, CLEAR_ERRORS, GET_USER_POSTS, CLEAR_POST, CLEAR_POSTS } from "./types";
+import { GET_ERRORS, GET_POSTS, GET_POST, POST_LOADING, CLEAR_ERRORS, GET_USER_POSTS, CLEAR_POST, CLEAR_POSTS, GET_TAG_POSTS } from "./types";
 
 //Add post
 export const addPost = (postData, history) => dispatch => {
@@ -252,6 +252,21 @@ export const allPostsExceptCurrentUsers = () => (dispatch) => {
     });
 };
 
+export const tagToPost = (postId, profileId, tagData) => dispatch => {
+  debugger;
+  axios
+    .post(`/api/posts/${postId}/tag/${profileId}`, tagData)
+    .then(res => {
+      debugger;
+      dispatch(getTagPosts(postId));
+      dispatch(refreshPost(postId));
+    })
+    .catch(err => dispatch({
+      type: GET_ERRORS,
+      payload: err.response.data,
+    }))
+}
+
 // Get all posts from following list
 export const getFollowingPosts = () => (dispatch) => {
   dispatch(clearPosts());
@@ -406,4 +421,22 @@ export const clearPosts = () => {
   return {
     type: CLEAR_POSTS
   }
+}
+
+export const getTagPosts = (postId) => dispatch => {
+  axios
+    .get(`/api/posts/tagpost/${postId}`)
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: GET_TAG_POSTS,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    })
 }

@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "./post.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AddComment from "./AddComment";
 import Comments from "./Comments";
 import { connect } from "react-redux";
-import { getPost, deletePost } from "../../actions/postActions";
+import { getPost, deletePost, getTagPosts, refreshPost } from "../../actions/postActions";
 import Moment from "react-moment"; 
 import Spinner from "../common/Spinner";
-import {addLike, removeLike, savePost, unsavePost} from "../../actions/postActions" 
+import {addLike, removeLike, savePost, unsavePost} from "../../actions/postActions";
 import TagItem from "./TagItem";
 import TagList from "./TagList";
+import Search from "./Search";
 
 function Post(props) {
   const [x, setX] = useState("");
   const [y, setY] = useState("");
-  useEffect(() => {
-    props.getPost(props.match.params.id, props.history)
-  }, [props.match.params.id]);
+  const [showSearch, setShowSearch] = useState(false);
+  const [tag, setTag] = useState(false);
+  const {id} = useParams();
 
+  useEffect(() => {
+    props.getPost(id, props.history);
+    props.getTagPosts(id);
+  }, []);
+  
   const onDeletePost = (postId, history) => {
     props.deletePost(postId, history);
   }
@@ -25,16 +31,17 @@ function Post(props) {
   const tagClick = (e) => {
     setX(e.nativeEvent.offsetX);
     setY(e.nativeEvent.offsetY);
+    setShowSearch(!showSearch);
   }
 
-  const {post, loadingPost} = props.post;
+  const {post, loadingPost, tagPosts} = props.post;
   const postId = props.match.params.id;
   
   let content;
-  if (loadingPost || post === null) {
+  if (loadingPost || post === null || tagPosts === null) {
     content = <Spinner />
   } 
-  if (post && post.user) {
+  if (post && post.user && tagPosts) {
     let deleteIcon;
     let alreadyLiked = false;
     if(post.likes !== undefined) {
@@ -74,6 +81,23 @@ function Post(props) {
         </div>
       );
     }
+
+    const opaqueTagIcon = {
+      left: "20px", 
+      top: "550px", 
+      position: "absolute",
+      opacity: "0.5",
+    };
+    const tagIcon = {
+      left: "20px", 
+      top: "550px", 
+      position: "absolute",
+    }
+
+    const tagIconClick = () => {
+      setTag(!tag);
+    }
+
     const icons = (
       <div>
         {alreadyLiked === true ? (
@@ -136,17 +160,18 @@ function Post(props) {
               <img
                 className='size-of-image'
                 src={post.image}
-                onClick={tagClick}
+                onClick={post.user._id === props.auth.user.id ? tagClick : false}
               />
               {/* Tag icon */}
-              <div style={{left: "20px", top: "550px", position: "absolute"}}>
+              <div style={tag ? tagIcon : opaqueTagIcon} onClick={tagIconClick}>
                 <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-tags-fill" fill="white" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M3 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 7.586 1H3zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                   <path d="M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1v5.086z"/>
                 </svg>
               </div>
               {/* Tag */}
-              <TagList tags={[]}/>
+              {tagPosts && tag && <TagList tags={tagPosts}/>}
+              {showSearch && <Search x={x} y={y} postId={postId}/>}
             </div>
             
             <div className='style d-none d-xl-block d-md-none d-lg-none d-sm-none '>
@@ -229,7 +254,8 @@ function Post(props) {
 
 const mapStateToProps = state => ({
   post: state.post,
-  auth: state.auth
+  auth: state.auth,
+  profile: state.profile,
 });
 
-export default connect(mapStateToProps, { getPost, deletePost, addLike, removeLike, savePost, unsavePost })(Post);
+export default connect(mapStateToProps, { refreshPost, getPost, deletePost, addLike, removeLike, savePost, unsavePost, getTagPosts })(Post);

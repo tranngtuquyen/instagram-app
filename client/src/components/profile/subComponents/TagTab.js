@@ -1,8 +1,9 @@
 import React from 'react'
 
-export default function TagTab() {
+function TagTab(props) {
+  const {getTaggedPosts, tagIcon} = props;
   return (
-    <div className='profileTab'>
+    <div type="button" onClick={getTaggedPosts} className={`profileTab ${tagIcon ? "activeStyle" : ""}`}>
       <i className='far fa-user-circle' aria-hidden='true'>
         <span style={{ marginLeft: "5px", fontFamily: "sans-serif" }}>
           TAGGED
@@ -11,3 +12,5 @@ export default function TagTab() {
     </div>
   )
 }
+
+export default TagTab;

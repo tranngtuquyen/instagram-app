@@ -387,14 +387,14 @@ router.get(
   }
 );
 
-// @route   GET /api/posts/tagprofile/:profile_id
-// @desc    Get tags by profileId
+// @route   GET /api/posts/tagprofile/:handle
+// @desc    Get tags by handle
 // @access  Private
 router.get(
-  "/tagprofile/:profile_id",
+  "/tagprofile/:handle",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Tag.find({profile: req.params.profile_id})
+    Tag.find({handle: req.params.handle})
       .then(tags => res.json(tags))
       .catch(err => res.status(400).json(err))
   }

@@ -8,6 +8,7 @@ import {
   GET_CURRENT_PROFILE,
   CLEAR_PROFILE,
   PROFILES_LOADING,
+  GET_TAG_PROFILE,
 } from "../actions/types";
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   search: null,
   currentProfile: null,
   loadingProfiles: false,
+  tagPosts: null,
 };
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -45,6 +47,12 @@ export default function (state = initialState, action) {
         currentProfile: action.payload,
         loading: false
       };
+    case GET_TAG_PROFILE:
+      // console.log(action.payload);
+      return {
+        ...state,
+        tagPosts: action.payload
+      }
     case GET_PROFILES:
       return {
         ...state,

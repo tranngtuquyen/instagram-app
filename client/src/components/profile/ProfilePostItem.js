@@ -4,11 +4,11 @@ import "./profile.css";
 
 class ProfilePostItem extends Component {
   render() {
-    const { post, id, image } = this.props;
+    const { tagged, saved } = this.props;
 
     return this.props.posts.map((post) => {
-      let id = this.props.saved === false ? post._id : post.postId;
-
+      // let id = this.props.saved === false ? post._id : post.postId;
+      let id = saved === true ? post.postId : (tagged === true ? post.post : post._id); 
       return (
         <div>
           <div id='posts' className='col-lg-4 col-md-6 col-xs-12 col-xxs-12'>

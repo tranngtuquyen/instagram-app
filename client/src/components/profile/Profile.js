@@ -23,6 +23,9 @@ function Profile(props) {
   const [saved, setSaved] = useState(false);
   const [postsIcon, setPostsIcon] = useState(true);
   const [savedIcon, setSavedIcon] = useState(false);
+  const [tagIcon, setTagIcon] = useState(false);
+  const [tagged, setTagged] = useState(false);
+
   useEffect(() => {
     setPosts(props.userPosts);
   }, [props.userPosts])
@@ -61,6 +64,8 @@ function Profile(props) {
     setSaved(false);
     setPostsIcon(true);
     setSavedIcon(false);
+    setTagIcon(false);
+    setTagged(false);
   }
 
   const getSavedPosts = () => {
@@ -68,6 +73,16 @@ function Profile(props) {
     setSaved(true);
     setPostsIcon(false);
     setSavedIcon(true);
+    setTagIcon(false);
+  }
+  
+  const getTaggedPosts = () => {
+    setPosts(props.tagPosts);
+    setPostsIcon(false);
+    setSavedIcon(false);
+    setTagIcon(true);
+    setSaved(false);
+    setTagged(true);
   }
   
   let profileContent;
@@ -145,6 +160,9 @@ function Profile(props) {
           savedIcon={savedIcon}
           posts={posts}
           saved={saved}
+          getTaggedPosts={getTaggedPosts}
+          tagIcon={tagIcon}
+          tagged={tagged}
         />
       </Fragment>
     );

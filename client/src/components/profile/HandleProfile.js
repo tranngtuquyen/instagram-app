@@ -4,7 +4,7 @@ import { getOtherUsersPosts } from "../../actions/postActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
-import { getProfileByHandle, getFollowingList } from '../../actions/profileActions';
+import { getProfileByHandle, getFollowingList, getTagPostsProfile } from '../../actions/profileActions';
 import { withRouter } from "react-router-dom";
 
 function HandleProfile(props) {
@@ -12,13 +12,14 @@ function HandleProfile(props) {
     props.getProfileByHandle(props.match.params.handle, props.history);
     props.getOtherUsersPosts(props.match.params.handle);
     props.getFollowingList();
+    props.getTagPostsProfile(props.match.params.handle);
   }, [props.match.params.handle]);
 
-  const { profile, loading, followingList } = props.profile;
+  const { profile, loading, followingList, tagPosts } = props.profile;
   let content;
   const { userPosts, loadingPost } = props.post;
 
-  if (loading || loadingPost || profile === null || userPosts === null || followingList === null) {
+  if (loading || loadingPost || profile === null || userPosts === null || followingList === null || tagPosts === null) {
     content = ( <Spinner /> )
   } else {
     content = (
@@ -30,6 +31,7 @@ function HandleProfile(props) {
           loadingPost={loadingPost}
           isCurrentProfile={true}
           followingList={followingList}
+          tagPosts={tagPosts}
         />
       </div>
     );
@@ -51,5 +53,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getOtherUsersPosts,
   getProfileByHandle,
-  getFollowingList
+  getFollowingList,
+  getTagPostsProfile
 })(withRouter(HandleProfile));

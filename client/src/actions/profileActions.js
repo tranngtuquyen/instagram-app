@@ -1,6 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS, SET_CURRENT_USER, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_PROFILES, PROFILE_LOADING, GET_FOLLOWING, GET_ALL_PROFILES, GET_CURRENT_PROFILE, CLEAR_PROFILE, PROFILES_LOADING } from "./types";
-import setAuthToken from "../utils/setAuthToken";
+import { GET_ERRORS, SET_CURRENT_USER, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_PROFILES, PROFILE_LOADING, GET_FOLLOWING, GET_ALL_PROFILES, GET_CURRENT_PROFILE, CLEAR_PROFILE, PROFILES_LOADING, GET_TAG_PROFILE } from "./types";
 import {logoutUser} from "./authActions";
 
 // Create Profile
@@ -23,15 +22,7 @@ export const deleteAccount = (history) => (dispatch) => {
     axios
       .delete("/api/profile")
       .then((res) => {
-        // dispatch({
-        //   type: SET_CURRENT_USER,
-        //   payload: {},
-        // });
-        // history.push("/");
         dispatch(logoutUser());
-        // //Remove token from localStorage otherwise after deleting account, on refreshing page --the navbar shows -- as token will still be there in headers and locastorage 
-        // localStorage.removeItem("jwtToken");
-        // setAuthToken(false);
       })
       .catch((err) =>
         dispatch({
@@ -75,11 +66,6 @@ dispatch(clearProfile());
       })
      } )
     .catch(err =>{
-      // console.log(err)
-      // dispatch({
-      //   type: GET_ERRORS,
-      //   payload: err.response.data
-      // })
       history.push("/not-found");
     });
 };
@@ -211,17 +197,35 @@ export const addPicture = (newPic, history) => dispatch => {
       });
     });
 };
+
+//Get tag posts for a profile
+export const getTagPostsProfile = (handle) => dispatch => {
+  axios
+    .get(`/api/posts/tagprofile/${handle}`)
+    .then(res => {
+      dispatch({
+        type: GET_TAG_PROFILE,
+        payload: res.data
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    })
+}
 // Remove avatar
 export const removeAvatar = () => (dispatch) => {
-         axios
-           .put("/api/users/removeAvatar")
-           .then((res) => window.location.reload(true))
-           .catch((err) => {
-             // console.log(err)
-             dispatch({
-               type: GET_ERRORS,
-               payload: {},
-             });
-           });
-         
-       };
+  axios
+    .put("/api/users/removeAvatar")
+    .then((res) => window.location.reload(true))
+    .catch((err) => {
+      // console.log(err)
+      dispatch({
+        type: GET_ERRORS,
+        payload: {},
+      });
+    });
+  
+};

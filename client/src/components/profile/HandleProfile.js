@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { useState, useEffect , Fragment } from "react";
 import Profile from "./Profile";
 import { getOtherUsersPosts } from "../../actions/postActions";
 import { connect } from "react-redux";
@@ -7,55 +7,34 @@ import Spinner from "../common/Spinner";
 import { getProfileByHandle, getFollowingList } from '../../actions/profileActions';
 import { withRouter } from "react-router-dom";
 
-class HandleProfile extends Component {
-  componentDidMount() {
-  // if (this.props.match.params.user_id) {
-  //   this.props.getOtherUsersPosts(this.props.match.params.user_id);
-  // }
-   if (this.props.match.params.handle) {
-    this.props.getProfileByHandle(this.props.match.params.handle, this.props.history);
-    this.props.getOtherUsersPosts(this.props.match.params.handle);
-    }
-    this.props.getFollowingList();
-  }
+function HandleProfile(props) {
+  useEffect(() => {
+    props.getProfileByHandle(props.match.params.handle, props.history);
+    props.getOtherUsersPosts(props.match.params.handle);
+    props.getFollowingList();
+  }, [props.match.params.handle]);
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.match && nextProps.match.params && this.props.match && this.props.match.params) {
-      if (nextProps.match.params.handle !== this.props.match.params.handle) {
-        // console.log(nextProps.match.params.handle);
-        // console.log(this.props.match.params.handle)
-        window.location.reload(true);
-      }
-    }
-  }
+  const { profile, loading, followingList } = props.profile;
+  let content;
+  const { userPosts, loadingPost } = props.post;
 
-  render() {
-    // console.log(this.props.profile.profile);
-    const { profile, loading, followingList } = this.props.profile;
-    let content;
-    const { userPosts, loadingPost } = this.props.post;
-    // console.log(userPosts);
-    // console.log(profile);
- 
-
-    if (loading || loadingPost || profile === null || userPosts === null || followingList === null) {
-      content = ( <Spinner /> )
-    } else {
-      content = (
-        <div>
-          <Profile
-            profile={profile}
-            loading={loading}
-            userPosts={userPosts}
-            loadingPost={loadingPost}
-            isCurrentProfile={true}
-            followingList={followingList}
-          />
-        </div>
-      );
-    }
-    return <div style={{minHeight: "90vh"}}> {content}</div>;
+  if (loading || loadingPost || profile === null || userPosts === null || followingList === null) {
+    content = ( <Spinner /> )
+  } else {
+    content = (
+      <div>
+        <Profile
+          profile={profile}
+          loading={loading}
+          userPosts={userPosts}
+          loadingPost={loadingPost}
+          isCurrentProfile={true}
+          followingList={followingList}
+        />
+      </div>
+    );
   }
+  return <div style={{minHeight: "90vh"}}> {content}</div>;
 }
 
 Profile.propTypes = {

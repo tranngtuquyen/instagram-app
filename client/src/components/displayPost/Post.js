@@ -8,7 +8,6 @@ import { getPost, deletePost, getTagPosts, refreshPost } from "../../actions/pos
 import Moment from "react-moment"; 
 import Spinner from "../common/Spinner";
 import {addLike, removeLike, savePost, unsavePost} from "../../actions/postActions";
-import TagItem from "./TagItem";
 import TagList from "./TagList";
 import Search from "./Search";
 
@@ -82,18 +81,6 @@ function Post(props) {
       );
     }
 
-    const opaqueTagIcon = {
-      left: "20px", 
-      top: "550px", 
-      position: "absolute",
-      opacity: "0.5",
-    };
-    const tagIcon = {
-      left: "20px", 
-      top: "550px", 
-      position: "absolute",
-    }
-
     const tagIconClick = () => {
       setTag(!tag);
     }
@@ -161,9 +148,10 @@ function Post(props) {
                 className='size-of-image'
                 src={post.image}
                 onClick={post.user._id === props.auth.user.id ? tagClick : false}
+                style={tag ? {opacity: "80%"} : {}}
               />
               {/* Tag icon */}
-              <div style={tag ? tagIcon : opaqueTagIcon} onClick={tagIconClick}>
+              <div style={tag ? {} : {opacity: "0.5"}} onClick={tagIconClick} className="tag-icon">
                 <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-tags-fill" fill="white" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M3 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 7.586 1H3zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                   <path d="M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1v5.086z"/>

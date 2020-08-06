@@ -339,8 +339,8 @@ router.post(
                       image: post.image,
                       profile: req.params.profile_id,
                       handle: profile.handle,
-                      leftX: req.body.leftX + "px",
-                      topY: req.body.topY + "px"
+                      leftX: req.body.leftX,
+                      topY: req.body.topY
                     });
     
                     newTag.save()

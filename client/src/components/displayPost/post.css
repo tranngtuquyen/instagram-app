@@ -43,6 +43,11 @@
   z-index: 2;
   /* background-color: rgba(0,0,0,.5); */
 }
+.tag-icon {
+  left: 20px;
+  top: 550px;
+  position: absolute;
+}
 .size-of-image {
   width: 600px;
   height: 600px;

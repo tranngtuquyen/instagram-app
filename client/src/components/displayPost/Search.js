@@ -28,8 +28,8 @@ function Search (props) {
 
   const tagUser = (profileId) => {
     const newTag = {
-      leftX: props.x,
-      topY: props.y,
+      leftX: props.x/600,
+      topY: props.y/600,
     };
     props.tagToPost(props.postId, profileId, newTag);
   }

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./post.css";
 import { Link } from "react-router-dom";
 import AddComment from "./AddComment";
@@ -8,76 +8,79 @@ import { getPost, deletePost } from "../../actions/postActions";
 import Moment from "react-moment"; 
 import Spinner from "../common/Spinner";
 import {addLike, removeLike, savePost, unsavePost} from "../../actions/postActions" 
+import TagItem from "./TagItem";
+import TagList from "./TagList";
 
-class Post extends Component {
-  constructor(props) {
-    super(props);
+function Post(props) {
+  const [x, setX] = useState("");
+  const [y, setY] = useState("");
+  useEffect(() => {
+    props.getPost(props.match.params.id, props.history)
+  }, [props.match.params.id]);
+
+  const onDeletePost = (postId, history) => {
+    props.deletePost(postId, history);
   }
 
-  componentDidMount() {
-    this.props.getPost(this.props.match.params.id, this.props.history);
+  const tagClick = (e) => {
+    setX(e.nativeEvent.offsetX);
+    setY(e.nativeEvent.offsetY);
   }
+
+  const {post, loadingPost} = props.post;
+  const postId = props.match.params.id;
   
-  onDeletePost(postId, history) {
-    this.props.deletePost(postId, history);
-  }
-
-  render() {
-    const {post, loadingPost} = this.props.post;
-    console.log(post.user);
-    const postId = this.props.match.params.id;
-    
-    let content;
-    if (loadingPost || post === null) {
-      content = <Spinner />
-    } 
-    if (post && post.user) {
-      let deleteIcon;
+  let content;
+  if (loadingPost || post === null) {
+    content = <Spinner />
+  } 
+  if (post && post.user) {
+    let deleteIcon;
     let alreadyLiked = false;
     if(post.likes !== undefined) {
-    if(post.likes.filter(like => like.user === this.props.auth.user.id).length > 0)
-    {
-      alreadyLiked = true;
+      if(post.likes.filter(like => like.user === props.auth.user.id).length > 0)
+      {
+        alreadyLiked = true;
+      }
     }
-   }
-  let alreadySaved = false;
-  if (post.saved !== undefined) {
-    if (
-      post.saved.filter((save) => save.user === this.props.auth.user.id)
-        .length > 0
-    ) {
-      alreadySaved = true;
+    let alreadySaved = false;
+    if (post.saved !== undefined) {
+      if (
+        post.saved.filter((save) => save.user === props.auth.user.id)
+          .length > 0
+      ) {
+        alreadySaved = true;
+      }
     }
-  }
  
-     if (post.user._id === this.props.auth.user.id) {
-       deleteIcon = (
-         <div
-           type='button'
-           className='delete-post'
-           onClick={this.onDeletePost.bind(this, post._id, this.props.history)}
-         >
-           <i
-             style={{
-               fontSize: "1.5em",
-               float: "right",
-               padding: "5px",
-               marginTop: "-3px",
-               fontWeight: "lighter",
-             }}
-             className='fa fa-trash'
-             aria-hidden='true'
-           ></i>
-         </div>
-       );
-     }
+    if (post.user._id === props.auth.user.id) {
+      deleteIcon = (
+        <div
+          type='button'
+          className='delete-post'
+          onClick={() => onDeletePost(post._id, props.history)}
+        >
+          <i
+            style={{
+              fontSize: "1.5em",
+              float: "right",
+              padding: "5px",
+              marginTop: "-3px",
+              fontWeight: "lighter",
+            }}
+            className='fa fa-trash'
+            aria-hidden='true'
+          ></i>
+        </div>
+      );
+    }
     const icons = (
       <div>
         {alreadyLiked === true ? (
           <div type='button' className='icons-post'>
             <i
               onClick={() => {
-                this.props.removeLike(post._id);
+                props.removeLike(post._id);
               }}
               className='fa fa-heart'
               style={{ fontSize: "1.5em", color: "red" }}
@@ -87,7 +90,7 @@ class Post extends Component {
         ) : (
           <div
             type='button'
-            onClick={() => this.props.addLike(post._id)}
+            onClick={() => props.addLike(post._id)}
             className='icons-post'
           >
             <i
@@ -102,7 +105,7 @@ class Post extends Component {
           <div type='button' className='icons-post'>
             <i
               onClick={() => {
-                this.props.unsavePost(post._id);
+                props.unsavePost(post._id);
               }}
               style={{ fontSize: "1.5em" }}
               className='fa fa-bookmark'
@@ -113,7 +116,7 @@ class Post extends Component {
           <div type='button' className='icons-post'>
             <i
               onClick={() => {
-                this.props.savePost(post._id);
+                props.savePost(post._id);
               }}
               style={{ fontSize: "1.5em" }}
               className='fa fa-bookmark-o'
@@ -129,10 +132,23 @@ class Post extends Component {
       content = (
         <div className='child'>
           <div className='container-post'>
-            <img
-              className='size-of-image'
-              src={post.image}
-            />
+              <div style={{position: "relative"}}>
+              <img
+                className='size-of-image'
+                src={post.image}
+                onClick={tagClick}
+              />
+              {/* Tag icon */}
+              <div style={{left: "20px", top: "550px", position: "absolute"}}>
+                <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-tags-fill" fill="white" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M3 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 7.586 1H3zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                  <path d="M1 7.086a1 1 0 0 0 .293.707L8.75 15.25l-.043.043a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 0 7.586V3a1 1 0 0 1 1-1v5.086z"/>
+                </svg>
+              </div>
+              {/* Tag */}
+              <TagList tags={[]}/>
+            </div>
+            
             <div className='style d-none d-xl-block d-md-none d-lg-none d-sm-none '>
               <Link to={`/profile/${post.handle}`}>
                 <img className='avatar-icon' src={post.user.avatar} alt='Avatar' />
@@ -141,6 +157,7 @@ class Post extends Component {
                 {post.name}
               </Link>
               <hr style={{ marginBottom: "10px" }} />
+
 
               {/*  post description & comments on post */}
               <div>
@@ -174,9 +191,6 @@ class Post extends Component {
                   />
                 </section>
               </div>
-                 
-
-                 
               
               <div id='footer'>
                 <hr />
@@ -202,23 +216,6 @@ class Post extends Component {
               </div>
             </div>
           </div>
-
-          {/* section only for mobiles*/}
-
-          <div id='wrapper'>
-            <section className='section-only-mobile d-xl-none'>
-              <section>
-                {/* Show like, save, delete icons */}
-                {icons}
-              </section>
-
-              <p className='post-textStyle-date'>
-              <Moment format="D MMM YYYY">{post.date}</Moment> &nbsp; <span>{post.likes && post.likes.length} Likes</span>
-              </p>
-              <AddComment />
-              
-            </section>
-          </div>
         </div>
       );
     }
@@ -228,15 +225,8 @@ class Post extends Component {
         {content}
       </div>
     );
-  }
 }
 
-// Profile.propTypes = {
-  
-//   auth: PropTypes.object.isRequired,
-  
-//   logoutUser: PropTypes.func.isRequired,
-// };
 const mapStateToProps = state => ({
   post: state.post,
   auth: state.auth

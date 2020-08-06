@@ -7,6 +7,7 @@ const Profile = require("../../models/Profile");
 const validatePostInput = require("../../validation/post");
 const User = require("../../models/User");
 const validateComment = require("../../validation/comment");
+const Tag = require("../../models/Tag");
 
 // @route   POST api/posts
 // @desc    Create post
@@ -315,85 +316,87 @@ router.post(
   }
 );
 
-// @route   POST /api/posts/:post_id/tag/:user_id
+// @route   POST /api/posts/:post_id/tag/:profile_id
 // @desc    tag a user to post
 // @access  Private
 router.post(
-  "/:post_id/tag/:user_id",
+  "/:post_id/tag/:profile_id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Post.findById(req.params.post_id).then(post => {
-      if (post.tag.filter(tag => tag.user.toString() === req.params.user_id).length > 0) {
-        return res.status(400).json({ msg: 'this person is already tagged' });
-      }
-      post.tag.unshift({ user: req.params.user_id });
-      post.save().then(post => res.json(post));
-      Profile.findOne({ user: req.params.user_id }).then(othersProfile => {
-        const taggedPost = {
-          image: post.image,
-          postId: req.params.post_id
-        }; 
-     
-        // othersProfile.tagged.unshift({ postId: req.params.post_id });
-        othersProfile.tagged.unshift(taggedPost);
-        othersProfile.save().then(() => {
-           res.json({ msg: 'success' });
-       
-        });
-      });
-    }).catch((err) =>
-      res.status(500).json({ msg: "Server Error" }));
-  });
+    Profile.findById(req.params.profile_id)
+      .then(profile => {
+        if (profile) {
+          Post.findById(req.params.post_id)
+            .then(post => {
+              if (post) {
+                Tag.findOne({post: req.params.post_id, profile: req.params.profile_id})
+                .then(tag => {
+                  if (tag) {
+                    return res.status(400).json({msg: "This person has been tagged"})
+                  } else {
+                    const newTag = new Tag({
+                      post: req.params.post_id,
+                      image: post.image,
+                      profile: req.params.profile_id,
+                      handle: profile.handle
+                    });
+    
+                    newTag.save()
+                      .then(tag => res.json(tag));
+                  }
+                })
+              } else {
+                return res.status(404).json({nopostfound: "No post found"});
+              }
+            })
+            .catch(err => res.status(404).json(err));
+        } else {
+          return res.status(404).json({noprofilefound: "No profile found"});
+        }
+      })
+      .catch(err => res.status(404).json(err));
+  }
+)
 
-// @route   POST /api/posts/:post_id/untag/:user_id
+// @route   POST /api/posts/:post_id/untag/:profile_id
 // @desc    untag user
 // @access  Private
-router.post('/:post_id/untag/:user_id', passport.authenticate("jwt", { session: false }), (req, res) => {
-  Post.findById(req.params.post_id).then(post => {
-    if (post.tag.filter(tag => tag.user.toString() === req.params.user_id).length === 0) {
+router.post(
+  "/:post_id/untag/:profile_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Tag.findOneAndDelete({post: req.params.post_id, profile: req.params.profile_id})
+      .then(tag => res.json({msg: "Success"}))
+      .catch(err => res.status(400).json(err));
+  }
+)
 
-      return res.status(400).json({ msg: 'You have not tagged this person' });
-    }
 
-    const removeIndex1 = post.tag.map(tag => tag.user.toString()).indexOf(req.params.user_id);
-    post.tag.splice(removeIndex1, 1);
-    post.save().then(p => res.json(p));
-    Profile.findOne({ user: req.params.user_id }).then(othersProfile => {
-      const removeIndex2 = othersProfile.tagged.map(tagged => tagged.postId.toString()).indexOf(req.params.post_id);
-      othersProfile.tagged.splice(removeIndex2, 1);
-      othersProfile.save();
-    })
-  }).catch((err) => {
-    console.log(err.message);
-    res.status(500).json({ msg: "Server Error" })
-  });
-});
+// @route   GET /api/posts/tagpost/:post_id
+// @desc    Get tags by postId
+// @access  Private
+router.get(
+  "/tagpost/:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Tag.find({post: req.params.post_id})
+      .then(tags => res.json(tags))
+      .catch(err => res.status(400).json(err))
+  }
+);
 
-// // @route   GET /api/posts/user/tagged
-// // @desc    Get tagged posts of current user
-// // @access  Private
-// router.get("/user/tagged",
-//   passport.authenticate("jwt", { session: false }),
-//   (req, res) => {
-//     // console.log(req.user.id);
-//     Profile.findOne({user: req.user.id})
-//       .populate({
-//         path: "tagged",
-//         populate: {
-//           path: "postId",
-//           select: "image"
-//         }
-//       })
-//       .then(profile => {
-//         if (profile) {
-//           return res.json(profile.tagged)
-//         } else {
-//           return res.status(400).json({noprofilefound: "No profile found in then"});
-//         }
-//       })
-//       .catch(err => console.log(err));
-//   }
-// );
+// @route   GET /api/posts/tagprofile/:profile_id
+// @desc    Get tags by profileId
+// @access  Private
+router.get(
+  "/tagprofile/:profile_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Tag.find({profile: req.params.profile_id})
+      .then(tags => res.json(tags))
+      .catch(err => res.status(400).json(err))
+  }
+)
 
 // @route   POST api/posts/comment/:post_id
 // @desc    Add comment to post

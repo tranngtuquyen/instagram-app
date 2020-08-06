@@ -22,7 +22,6 @@ import { logoutUser } from "./actions/authActions";
 import { getCurrentProfile } from "./actions/profileActions";
 import NotFound from "./components/common/NotFound";
 import Gallery from './components/gallery/Gallery';
-import UploadAvatar from './components/profile/UploadAvatar'
 
 //Check for token
 if (localStorage.jwtToken) {
@@ -96,10 +95,6 @@ class App extends Component {
             <Switch>
               <PrivateRoute exact path='/gallery' component={Gallery} />{" "}
             </Switch>
-            <Switch>
-              <PrivateRoute exact path='/upload' component={UploadAvatar} />{" "}
-            </Switch>
-
             <Footer />
           </div>
         </Router>

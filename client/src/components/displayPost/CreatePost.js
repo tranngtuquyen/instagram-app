@@ -49,10 +49,11 @@ function CreatePost(props) {
         image: result.secure_url
       };
   
-      props.addPost(newPost, props.history);
+      props.addPost(newPost, props.history, props.profile.currentProfile.handle);
     })
     
   }
+  const {currentProfile} = props.profile;
 
   return (
     <div className="container" style={{marginTop: "30px"}}>
@@ -101,7 +102,7 @@ function CreatePost(props) {
                 className='btn btn-primary'
                 style={{ marginRight: "10px" }}
               />
-              <Link to='/profile' className='btn btn-secondary'>
+              <Link to={`/profile/${currentProfile.handle}`} className='btn btn-secondary'>
                 Cancel
               </Link>
             </div>
@@ -113,7 +114,8 @@ function CreatePost(props) {
 }
 
 const mapStateToProps = (state) => ({
-  errors: state.errors
+  errors: state.errors,
+  profile: state.profile,
 });
 
 export default connect(mapStateToProps, { addPost })(withRouter(CreatePost));

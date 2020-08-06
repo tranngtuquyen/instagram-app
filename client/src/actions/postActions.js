@@ -2,13 +2,13 @@ import axios from "axios";
 import { GET_ERRORS, GET_POSTS, GET_POST, POST_LOADING, CLEAR_ERRORS, GET_USER_POSTS, CLEAR_POST, CLEAR_POSTS, GET_TAG_POSTS } from "./types";
 
 //Add post
-export const addPost = (postData, history) => dispatch => {
+export const addPost = (postData, history, handle) => dispatch => {
   dispatch(clearErrors());
   axios
     .post("/api/posts", postData)
     .then(res => {
       window.alert("Post successfully submitted")
-      history.push("/profile")})
+      history.push(`/profile/${handle}`)})
     .catch(err => 
       dispatch({
       type: GET_ERRORS,

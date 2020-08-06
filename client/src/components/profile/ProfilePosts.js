@@ -14,7 +14,6 @@ function ProfilePosts(props) {
       {/* Profile tabs */}
       <div className='profileTabs icons'>
         <PostTab getPosts={getPosts} postsIcon={postsIcon}/>
-        {user.id === profile.user._id && <AddPostTab />}
         {user.id === profile.user._id && <SavedTab getSavedPosts={getSavedPosts} savedIcon={savedIcon}/>}
         <TagTab getTaggedPosts={getTaggedPosts} tagIcon={tagIcon}/>
       </div>

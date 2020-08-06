@@ -11,6 +11,7 @@ import ExploreIcon from "./navbarIcons/ExploreIcon";
 import GalleryIcon from "./navbarIcons/GalleryIcon";
 import AvatarIcon from "./navbarIcons/AvatarIcon";
 import LogoutIcon from "./navbarIcons/LogoutIcon";
+import AddPostIcon from "./navbarIcons/AddPostIcon";
 
 function Navbar (props) {
   let location = useLocation();
@@ -18,6 +19,7 @@ function Navbar (props) {
   let [explore, setExplore] = useState(false);
   let [gallery, setGallery] = useState(false);
   let [avatarIcon, setAvatar] = useState(false);
+  let [addPost, setAddPost] = useState(false);
   
   useEffect(() => {
     if (location.pathname === "/home") {
@@ -25,26 +27,37 @@ function Navbar (props) {
       setExplore(false);
       setGallery(false);
       setAvatar(false);
+      setAddPost(false);
     } else if (location.pathname === "/explore") {
       setHome(false);
       setExplore(true);
       setGallery(false);
       setAvatar(false);
+      setAddPost(false);
     } else if (location.pathname === "/gallery") {
       setHome(false);
       setExplore(false);
       setGallery(true);
       setAvatar(false);
+      setAddPost(false);
     } else if (props.profile.currentProfile && location.pathname === `/profile/${props.profile.currentProfile.handle}`) {
       setHome(false);
       setExplore(false);
       setGallery(false);
       setAvatar(true);
+      setAddPost(false);
+    } else if (location.pathname === "/create-post") {
+      setHome(false);
+      setExplore(false);
+      setGallery(false);
+      setAvatar(false);
+      setAddPost(true);
     } else {
       setHome(false);
       setExplore(false);
       setGallery(false);
       setAvatar(false);
+      setAddPost(false);
     }
   }, [location, props.profile.currentProfile]);
   const logoutUserHandle = (e) => {
@@ -75,6 +88,9 @@ function Navbar (props) {
         <ul style={{ marginTop: "auto", marginBottom: "auto" }}>
           <li>
             <HomeIcon home={home}/>
+          </li>
+          <li>
+            <AddPostIcon addPost={addPost}/>
           </li>
           <li>
             <ExploreIcon explore={explore}/>

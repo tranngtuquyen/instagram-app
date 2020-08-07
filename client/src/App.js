@@ -22,6 +22,7 @@ import { logoutUser } from "./actions/authActions";
 import { getCurrentProfile } from "./actions/profileActions";
 import NotFound from "./components/common/NotFound";
 import Gallery from './components/gallery/Gallery';
+import Inbox from "./components/inbox/Inbox";
 
 //Check for token
 if (localStorage.jwtToken) {
@@ -94,6 +95,9 @@ class App extends Component {
             </Switch>
             <Switch>
               <PrivateRoute exact path='/gallery' component={Gallery} />{" "}
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path='/inbox' component={Inbox}/>
             </Switch>
             <Footer />
           </div>

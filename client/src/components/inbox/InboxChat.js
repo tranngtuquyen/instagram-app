@@ -1,10 +1,13 @@
 import React from 'react'
 import InboxChatDefault from './InboxChatDefault'
+import DirectChat from './DirectChat';
 
 function InboxChat(props) {
+  const {direct} = props;
   return (
     <div className="inboxChatFirstContainer">
-      <InboxChatDefault />
+      {!direct && <InboxChatDefault />}
+      {direct && <DirectChat />}
     </div>
   )
 }

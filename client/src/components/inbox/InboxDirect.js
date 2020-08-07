@@ -3,17 +3,17 @@ import "./inbox.css";
 import InboxMenu from './InboxMenu';
 import InboxChat from './InboxChat';
 
-function Inbox(props) {
+function InboxDirect(props) {
   return (
     <div className="inboxContainer">
       <div className="inboxInsideContainer">
         <div className="inboxCore">
           <InboxMenu />
-          <InboxChat direct={false}/>
+          <InboxChat direct={true}/>
         </div>
       </div>
     </div>
   )
 }
 
-export default Inbox;
+export default InboxDirect;

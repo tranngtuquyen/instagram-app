@@ -23,6 +23,7 @@ import { getCurrentProfile } from "./actions/profileActions";
 import NotFound from "./components/common/NotFound";
 import Gallery from './components/gallery/Gallery';
 import Inbox from "./components/inbox/Inbox";
+import InboxDirect from "./components/inbox/InboxDirect";
 
 //Check for token
 if (localStorage.jwtToken) {
@@ -98,6 +99,9 @@ class App extends Component {
             </Switch>
             <Switch>
               <PrivateRoute exact path='/inbox' component={Inbox}/>
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path='/direct' component={InboxDirect}/>
             </Switch>
             <Footer />
           </div>

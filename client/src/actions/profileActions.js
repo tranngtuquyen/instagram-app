@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS, SET_CURRENT_USER, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_PROFILES, PROFILE_LOADING, GET_FOLLOWING, GET_ALL_PROFILES, GET_CURRENT_PROFILE, CLEAR_PROFILE, PROFILES_LOADING, GET_TAG_PROFILE } from "./types";
+import { GET_ERRORS, SET_CURRENT_USER, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_PROFILES, PROFILE_LOADING, GET_FOLLOWING, GET_ALL_PROFILES, GET_CURRENT_PROFILE, CLEAR_PROFILE, PROFILES_LOADING, GET_TAG_PROFILE, SEARCH_PROFILES } from "./types";
 import {logoutUser} from "./authActions";
 
 // Create Profile
@@ -227,5 +227,24 @@ export const removeAvatar = () => (dispatch) => {
         payload: {},
       });
     });
-  
 };
+
+//Search profiles from search input
+export const searchProfiles = (searchTerm) => (dispatch) => {
+  axios
+    .post(`/api/profile/search/${searchTerm}`)
+    .then(res => {
+      console.log(searchTerm);
+      dispatch({
+        type: SEARCH_PROFILES,
+        payload: res.data
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: {},
+      });
+    });
+}

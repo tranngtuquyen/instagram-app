@@ -9,6 +9,7 @@ import {
   CLEAR_PROFILE,
   PROFILES_LOADING,
   GET_TAG_PROFILE,
+  SEARCH_PROFILES,
 } from "../actions/types";
 
 const initialState = {
@@ -64,7 +65,13 @@ export default function (state = initialState, action) {
         ...state,
         search: action.payload,
         loadingProfiles: false
-      }
+      };
+    case SEARCH_PROFILES:
+      return {
+        ...state,
+        search: action.payload,
+        loadingProfiles: false,
+      };
     case GET_FOLLOWING:
       return {
         ...state,

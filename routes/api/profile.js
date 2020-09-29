@@ -350,7 +350,7 @@ router.post('/unfollow/:profile_id', passport.authenticate("jwt", { session: fal
   });
 });
 
-// @route   GET api/profile/ suggestions;
+// @route   GET api/profile/suggestions
 // @desc    Get suggestion list for current profile
 // @access  Private
 router.get(
@@ -392,5 +392,18 @@ router.get(
       .catch((err) => console.log(err));
   }
 );
+
+// @route   GET api/profile/search/:searchTerm
+// @desc    Get search profiles
+// @access  Private
+router.post('/search/:searchTerm', 
+passport.authenticate("jwt", { session: false }), 
+(req, res) => {
+  Profile.find({handle: {$regex: req.params.searchTerm}})
+    .populate("user", ["name", "avatar"])
+    .then(profiles => {
+      return res.json(profiles);
+    })
+});
 
 module.exports = router;
